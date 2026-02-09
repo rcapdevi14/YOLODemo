@@ -4,10 +4,10 @@ from ultralytics import YOLO
 model = YOLO('yolov8s.pt')  # Change to 'yolov8n.pt' for faster/lighter, 'yolov8m.pt' for more accurate, etc.
 
 # Path to your image
-image_path = 'park.png'
+image_name_path = 'park.png'
 
 # Perform inference
-results = model(image_path)
+results = model(image_name_path)
 
 # Extract detected object names (with possible duplicates if multiple instances)
 detected_objects = [model.names[int(cls)] for r in results for cls in r.boxes.cls]
