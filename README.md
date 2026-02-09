@@ -14,16 +14,16 @@ Note how the script identifies a few objects: "Unique detected objects: ['person
 
 7) To obtain more details, run the script "code_2.py"
 
-Note that each identified object has a number associated to it. It measures the probability of the identification. 
+Note that each identified object has a number associated to it. It measures the probability of the identification.  
 We can now modify this probability, and only output identified objects above certain threshold.
 
 8) Run the script "code_3.py" multiple times adjusting the confidence threshold "conf=0.7" variable.
 
 Explore a limit case e.g. "conf=0.1" and look at all the noise.
 
-We now want to classify the persons in an image according to their age group into three simple categories: 
-Age < 19 = Child 
-Age > 60 = Elder 
+We now want to classify the persons in an image according to their age group into three simple categories:  
+Age < 19 = Child  
+Age > 60 = Elder  
 Else, Adult
 
 9) Install Deepface:
