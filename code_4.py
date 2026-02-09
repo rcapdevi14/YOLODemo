@@ -1,9 +1,9 @@
 from ultralytics import YOLO
-from IPython.display import Image, display  # For displaying the image inline in Jupyter
-from deepface import DeepFace  # New: For gender and age estimation
-import cv2  # New: For image manipulation (already installed via opencv-python)
+from IPython.display import Image, display
+import cv2
+from deepface import DeepFace
 
-# Load the pre-trained YOLOv8 small model
+# Load the small YOLOv8 model
 model = YOLO('yolov8s.pt')
 
 # Path to your image
@@ -15,27 +15,27 @@ results = model(image_name_path, conf=0.7)
 # Load the original image for cropping and annotation
 img = cv2.imread(image_name_path)
 
-# Extract detected objects and process only 'person' for gender/age
+# Lists to store results
 detected_objects = []
-person_details = []  # To store gender/age info
+person_age_groups = []  # Only age group info
 
 for r in results:
     for box, cls, conf in zip(r.boxes.xyxy, r.boxes.cls, r.boxes.conf):
         class_name = model.names[int(cls)]
         detected_objects.append(class_name)
         
-        if class_name == 'person' and conf > 0.7:  # Focus on high-conf persons
-            # Crop the bounding box (convert to int for slicing)
+        if class_name == 'person' and conf > 0.7:
+            # Crop the person region
             x1, y1, x2, y2 = map(int, box)
             person_crop = img[y1:y2, x1:x2]
             
-            # Analyze with DeepFace (tries to detect face and estimate)
             try:
-                analysis = DeepFace.analyze(person_crop, actions=['gender', 'age'], enforce_detection=False)
-                gender = analysis[0]['dominant_gender'] if analysis else 'Unknown'
+                # Only ask DeepFace for age (skip gender)
+                analysis = DeepFace.analyze(person_crop, actions=['age'], enforce_detection=False)
+                
                 age = analysis[0]['age'] if analysis else 'Unknown'
                 
-                # Classify age roughly (you can adjust thresholds)
+                # Classify age group
                 if age != 'Unknown':
                     if age < 18:
                         age_group = 'Child'
@@ -46,30 +46,32 @@ for r in results:
                 else:
                     age_group = 'Unknown'
                 
-                detail = f"{gender} {age_group}"
-                person_details.append(detail)
+                person_age_groups.append(age_group)
                 
-                # Annotate the image with gender/age label (below the default label)
-                label = f"Person ({detail}) {conf:.2f}"
-                cv2.putText(img, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                # Annotate only with age group
+                label = f"Person ({age_group}) {conf:.2f}"
+                cv2.putText(img, label, (x1, y1 - 10),
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                 cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            except:
-                person_details.append('Unknown')  # If no face detected or error
+                
+            except Exception:
+                person_age_groups.append('Unknown')
+                # Optional: you can still draw a box even if analysis failed
+                label = f"Person (Unknown) {conf:.2f}"
+                cv2.putText(img, label, (x1, y1 - 10),
+                           cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-# Print the original detected objects
 print("Detected objects in the image (conf > 0.7):")
 print(detected_objects)
 
-# Print unique objects
-unique_objects = list(set(detected_objects))
 print("\nUnique detected objects (conf > 0.7):")
-print(unique_objects)
+print(list(set(detected_objects)))
 
-# Print person-specific details
-print("\nPerson details (gender and age group):")
-print(person_details)
+print("\nPerson age groups:")
+print(person_age_groups)
 
-# Save and display the annotated image (now with gender/age if detected)
-output_name_path = 'park_detected_with_details.png'
+# Save and display the annotated image
+output_name_path = 'park_detected_age_group.png'
 cv2.imwrite(output_name_path, img)
 display(Image(filename=output_name_path))
