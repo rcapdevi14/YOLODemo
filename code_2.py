@@ -23,7 +23,7 @@ print("\nUnique detected objects:")
 print(unique_objects)
 
 # New: Save the annotated image with bounding boxes and labels
-output_name_path = 'park_detected.png'  # Change this filename if desired
+output_name_path = 'park_detected_all.png'  # Change this filename if desired
 results[0].save(output_name_path)  # Saves the image with detections overlaid
 
 # New: Display the annotated image inline in the Jupyter Notebook
