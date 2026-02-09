@@ -23,7 +23,7 @@ print("\nUnique detected objects (conf > 0.7):")
 print(unique_objects)
 
 # Save the annotated image with bounding boxes and labels (only for detections above 0.7)
-output_name_path = 'park_detected.png'  # Change this filename if desired
+output_name_path = 'park_detected_threshold.png'  # Change this filename if desired
 results[0].save(output_name_path)  # Saves the image with filtered detections overlaid
 
 # Display the annotated image inline in the Jupyter Notebook
