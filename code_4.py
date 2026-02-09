@@ -38,8 +38,8 @@ for r in results:
                 # Classify age group
                 if age != 'Unknown':
                     if age < 18:
-                        age_group = 'Child'
-                    elif age > 60:
+                        age_group = 'Minor'
+                    elif age > 65:
                         age_group = 'Elder'
                     else:
                         age_group = 'Adult'
