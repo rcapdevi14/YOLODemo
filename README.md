@@ -1,11 +1,11 @@
 # YOLODemo
-Simple YOLO-based image recognition python script
+Simple YOLO-based image recognition python script.
 
 STEPS:
 
 1) Open Google Colab (https://colab.google/) and create a "New Notebook."
 2) Install ultralytics, the repository that contains YOLO:
-   >>> pip install ultralytics pandas opencv-python ipykernel
+   >>> pip install ultralytics pandas opencv-python ipykernel.
 
 4) Upload the image "park.png" to Colab.
 5) Run the script "code_1.py" (update "image_name_path" in the script!)
@@ -22,8 +22,8 @@ We can now modify this probability, and only output identified objects above cer
 Explore a limit case e.g. "conf=0.1" and look at all the noise.
 
 We now want to classify the persons in an image according to their age group into three simple categories:  
-Age < 19 = Child  
-Age > 60 = Elder  
+Age < 18 = Minor  
+Age > 65 = Elder  
 Else, Adult
 
 9) Install Deepface:
