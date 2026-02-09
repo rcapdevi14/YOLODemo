@@ -21,9 +21,9 @@ We can now modify this probability, and only output identified objects above cer
 
 Explore a limit case e.g. "conf=0.1" and look at all the noise.
 
-We now want to classify the persons in an image according to their age group into three simple categories:
-Age < 19 = Child
-Age > 60 = Elder
+We now want to classify the persons in an image according to their age group into three simple categories: \\
+Age < 19 = Child \\
+Age > 60 = Elder \\
 Else, Adult
 
 9) Install Deepface:
