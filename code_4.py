@@ -39,13 +39,19 @@ for r in results:
                 if age != 'Unknown':
                     if age < 18:
                         age_group = 'Minor'
-                    elif age > 65:
+                    elif 18 < age <= 23:
+                        age_group = 'Young Adult'
+                    elif 23 < age <= 40:
+                        age_group = 'Adult'
+                    elif 40 < age <= 60:
+                        age_group = 'Senior'
+                    elif age > 60:
                         age_group = 'Elder'
                     else:
-                        age_group = 'Adult'
+                        age_group = 'Unknown'  # Fallback for any unexpected values
                 else:
                     age_group = 'Unknown'
-                
+
                 person_age_groups.append(age_group)
                 
                 # Annotate only with age group
